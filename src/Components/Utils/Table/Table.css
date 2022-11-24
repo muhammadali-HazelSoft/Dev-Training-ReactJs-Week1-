@@ -1,0 +1,7 @@
+#table{
+    overflow-y: hidden;
+    padding-top: 1rem;
+}
+.clikable{
+    cursor: pointer;
+}
