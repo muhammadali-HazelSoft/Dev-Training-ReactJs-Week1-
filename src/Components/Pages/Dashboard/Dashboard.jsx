@@ -24,7 +24,6 @@ function Dashboard() {
               <li className="nav-item px-3 w-100">
                 <NavLink
                   to="/"
-                  replace
                   className="nav-link text-decoration-none text-white"
                 >
                   <FaSignOutAlt className="mb-2 me-3" />

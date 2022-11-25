@@ -1,22 +1,21 @@
 import React, { useRef } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
-
-  const loginFormHandler=()=>{
-    if(emailRef.current.value === "admin@email.com" && passwordRef.current.value === "12345")
-    {
-      return(
-        navigate("/dashboard")
-      );
+  const loginFormHandler = () => {
+    if (
+      emailRef.current.value === "admin@email.com" &&
+      passwordRef.current.value === "Admin@1234"
+    ) {
+    navigate("/dashboard");
+    } else {
+      alert("Email does not exist..!");
     }
-    else{
-      alert("Please Enter Correct Email and Password")
-    }
-  }
+  };
   return (
     <div className="LoginForm my-auto">
       <div className="row">
@@ -26,7 +25,7 @@ function Login() {
             <h2 className="pt-3 pt-md-4 pt-lg-5 fw-bolder text-center pb-3">
               Login Please
             </h2>
-            <form action="#">
+            <form action="#" onSubmit={(e) => e.target.preventDefalut()}>
               <div className="row ">
                 {/* email input */}
                 <div className="col-3"></div>
@@ -41,8 +40,15 @@ function Login() {
                     id="email"
                     placeholder="your_email@email.com"
                     ref={emailRef}
+                    pattern="admin@email.com"
                     required
                   />
+                  <span className="text-danger mt-1">
+                    Email not registered..!
+                  </span>
+                  <span className="text-success mt-1">
+                    Verified..✓
+                  </span>
                 </div>
                 <div className="col-3"></div>
                 {/* password input */}
@@ -58,8 +64,15 @@ function Login() {
                     id="password"
                     placeholder="password"
                     ref={passwordRef}
+                    pattern="Admin@1234"
                     required
                   />
+                  <span className="text-danger mt-1">
+                    Incorrect password
+                  </span>
+                  <span className="text-success mt-1">
+                    Verified..✓
+                  </span>
                 </div>
                 <div className="col-3"></div>
                 {/* Submit button */}

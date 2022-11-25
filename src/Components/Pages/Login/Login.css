@@ -1,0 +1,12 @@
+.text-danger{
+   display: none;
+}
+.text-success{
+    display: none;
+}
+input:invalid ~ .text-danger{
+    display: block;
+}
+input:valid ~ .text-success{
+    display: block;
+}
