@@ -5,7 +5,7 @@ const initialState = {
   value: [],
   isLogIn: null,
 };
-const url = `https://retoolapi.dev/RNkDwn/userdata`;
+const url = `https://retoolapi.dev/AE760V/data`;
 
 export const getUserData = createAsyncThunk("user/getUserData", () => {
   return fetch(url)

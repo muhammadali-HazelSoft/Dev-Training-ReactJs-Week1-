@@ -69,7 +69,7 @@ function Table() {
   };
   //delete user
   const deleteHandler = (id) => {
-    fetch(`https://retoolapi.dev/RNkDwn/userdata/${id}`, {
+    fetch(`https://retoolapi.dev/AE760V/data/${id}`, {
       method: "DELETE",
     }).then((result) => {
       dispatch(getUserData());

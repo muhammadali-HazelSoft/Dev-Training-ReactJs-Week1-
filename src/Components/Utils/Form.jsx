@@ -6,7 +6,7 @@ import { getUserData } from "../State/UserSlice";
 function DataForm(props) {
   const dispatch = useDispatch();
   const mockdata = useSelector((state) => state.user.value);
-  const userId = mockdata.length + 1;
+  const userId = Math.floor(Math.random() * 1000) + mockdata.lenght + 1;
   // const dispatch = useDispatch();
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -28,7 +28,7 @@ function DataForm(props) {
         email:email,
         gender:gender,
       };
-      fetch("https://retoolapi.dev/RNkDwn/userdata", {
+      fetch("https://retoolapi.dev/AE760V/data", {
         method: "POST",
         headers: {
           Accept: "application/json",
