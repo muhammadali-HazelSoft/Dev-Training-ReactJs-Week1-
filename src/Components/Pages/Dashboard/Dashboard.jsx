@@ -3,8 +3,11 @@ import { NavLink } from "react-router-dom";
 import Sidebar from "../../Styles/Sidebar.styled";
 import Table from "../../Utils/Table/Table";
 import { FaTh, FaSignOutAlt } from "react-icons/fa";
+import { isLogedout } from "../../State/UserSlice";
+import { useDispatch } from "react-redux";
 
 function Dashboard() {
+  const dispatch = useDispatch();
   return (
     <>
       <div className="row">
@@ -25,6 +28,8 @@ function Dashboard() {
                 <NavLink
                   to="/"
                   className="nav-link text-decoration-none text-white"
+                  replace
+                  onClick = {()=>dispatch(isLogedout())}
                 >
                   <FaSignOutAlt className="mb-2 me-3" />
                   <span className="d-none d-md-inline-block">Logout</span>

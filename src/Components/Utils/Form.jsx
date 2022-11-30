@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+// import { addNewUser } from "../State/UserSlice";
+import { getUserData } from "../State/UserSlice";
 
 function DataForm(props) {
+  const dispatch = useDispatch();
+  const mockdata = useSelector((state) => state.user.value);
+  const userId = mockdata.length + 1;
+  // const dispatch = useDispatch();
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -15,14 +22,23 @@ function DataForm(props) {
       alert("Email Required!!!");
     } else {
       const newPersonData = {
-        id: props.mockData.length + 1,
-        first_name: fname,
-        last_name: lname,
-        email: email,
-        gender: gender,
+        id: userId,
+        first_name:fname,
+        last_name:lname,
+        email:email,
+        gender:gender,
       };
-      const newMockData = [...props.mockData, newPersonData];
-      props.setMockData(newMockData);
+      fetch("https://retoolapi.dev/RNkDwn/userdata", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(newPersonData),
+      }).then((result) => {
+        dispatch(getUserData());
+        console.log("Result:", { result });
+      });
     }
   };
   return (

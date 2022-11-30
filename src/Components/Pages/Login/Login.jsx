@@ -1,31 +1,38 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { isLogedin } from "../../State/UserSlice";
+import { useDispatch } from "react-redux";
 import "./Login.css";
 
 function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loginFormHandler = () => {
     if (
       emailRef.current.value === "admin@email.com" &&
       passwordRef.current.value === "Admin@1234"
     ) {
-    navigate("/dashboard");
-    } else {
-      alert("Email does not exist..!");
+      dispatch(isLogedin());
+      navigate("/dashboard");
     }
   };
   return (
     <div className="LoginForm my-auto">
       <div className="row">
-        <div></div>
         <div>
           <div className="container  ">
             <h2 className="pt-3 pt-md-4 pt-lg-5 fw-bolder text-center pb-3">
               Login Please
             </h2>
-            <form action="#" onSubmit={(e) => e.target.preventDefalut()}>
+            <form
+              action="#"
+              onSubmit={(e) => {
+                e.target.preventDefalut();
+                localStorage.setItem(e.target.value)
+              }}
+            >
               <div className="row ">
                 {/* email input */}
                 <div className="col-3"></div>
@@ -46,9 +53,7 @@ function Login() {
                   <span className="text-danger mt-1">
                     Email not registered..!
                   </span>
-                  <span className="text-success mt-1">
-                    Verified..✓
-                  </span>
+                  <span className="text-success mt-1">Verified..✓</span>
                 </div>
                 <div className="col-3"></div>
                 {/* password input */}
@@ -67,12 +72,8 @@ function Login() {
                     pattern="Admin@1234"
                     required
                   />
-                  <span className="text-danger mt-1">
-                    Incorrect password
-                  </span>
-                  <span className="text-success mt-1">
-                    Verified..✓
-                  </span>
+                  <span className="text-danger mt-1">Incorrect password</span>
+                  <span className="text-success mt-1">Verified..✓</span>
                 </div>
                 <div className="col-3"></div>
                 {/* Submit button */}

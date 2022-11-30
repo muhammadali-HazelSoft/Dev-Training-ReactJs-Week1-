@@ -4,8 +4,11 @@
 .text-success{
     display: none;
 }
-input:invalid ~ .text-danger{
+input:focus ~ .text-danger{
     display: block;
+}
+input:valid ~ .text-danger{
+    display: none;
 }
 input:valid ~ .text-success{
     display: block;

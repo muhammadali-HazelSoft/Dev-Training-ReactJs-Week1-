@@ -1,13 +1,29 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
-import { FaSort, FaTrash } from "react-icons/fa";
-import MOCK_DATA from "../../../MOCK_DATA.json";
-import "./Table.css";
 import Pagination from "../Pagination/Pagination";
 import DataForm from "../Form";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  // delUserData,
+  // removeUser,
+  sortuserDataASC,
+  sortuserDataDSC,
+  sortuserDataWithIdASC,
+  sortuserDataWithIdDSC,
+} from "../../State/UserSlice";
+import { Modal, Button } from "react-bootstrap";
+import { FaSort, FaTrash } from "react-icons/fa";
+import { getUserData } from "../../State/UserSlice";
+// import { useEffect } from "react";
+import "./Table.css";
 
 function Table() {
-  const [mockData, setMockData] = useState(MOCK_DATA);
+  //mockdata from redux store
+  const mockdata = useSelector((state) => state.user.value);
+  // const rowsPerPage = useSelector((state) => state.user.value.usersPerPage);
+  // const {rowsPerPage} = useSelector((state)=>state.user.value[200])
+ 
+  const dispatch = useDispatch();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(10);
 
@@ -27,49 +43,37 @@ function Table() {
   //show 10 rows perpage
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = mockData.slice(indexOfFirstRow, indexOfLastRow);
-
-  // Deleting row
-  const deleteBtnHandler = (id) => {
-    const newData = [...mockData];
-    const filteredData = newData.filter((person) => person.id !== id);
-    setMockData(filteredData);
-  };
+  const currentRows = mockdata.slice(indexOfFirstRow, indexOfLastRow);
 
   //Sorting Function for (first_name, last_name, email, gender)
   const sorting = (col) => {
-    debugger;
     if (sortOrder === "ASC") {
-      const sorted = [...mockData].sort((a, b) =>
-        a[col].toLowerCase() > b[col].toLowerCase() ? -1 : 1
-      );
-      setMockData(sorted);
+      dispatch(sortuserDataASC(col));
       setSortOrder("DSC");
     }
     if (sortOrder === "DSC") {
-      const sorted = [...mockData].sort((a, b) =>
-        a[col].toLowerCase() < b[col].toLowerCase() ? -1 : 1
-      );
-      setMockData(sorted);
+      dispatch(sortuserDataDSC(col));
       setSortOrder("ASC");
     }
   };
   //Sorting With Id
   const idSorting = (col) => {
     if (sortOrder === "ASC") {
-      const sorted = [...mockData].sort((a, b) =>
-        Number(a[col]) - Number(b[col])
-      );
-      setMockData(sorted);
+      dispatch(sortuserDataWithIdASC(col));
       setSortOrder("DSC");
     }
     if (sortOrder === "DSC") {
-      const sorted = [...mockData].sort((a, b) =>
-      Number(b[col]) - Number(a[col])
-      );
-      setMockData(sorted);
+      dispatch(sortuserDataWithIdDSC(col));
       setSortOrder("ASC");
     }
+  };
+  //delete user
+  const deleteHandler = (id) => {
+    fetch(`https://retoolapi.dev/RNkDwn/userdata/${id}`, {
+      method: "DELETE",
+    }).then((result) => {
+      dispatch(getUserData());
+    });
   };
   return (
     <>
@@ -79,11 +83,7 @@ function Table() {
           <Modal.Title>Add Data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <DataForm
-            onSubmit={onLoginFormSubmit}
-            mockData={mockData}
-            setMockData={setMockData}
-          />
+          <DataForm onSubmit={onLoginFormSubmit} />
         </Modal.Body>
       </Modal>
 
@@ -111,7 +111,6 @@ function Table() {
             />
           </span>
         </div>
-
         {/* Table */}
         <table className="table table-bordered">
           {/* table head */}
@@ -119,24 +118,21 @@ function Table() {
             <tr>
               <th className="clikable" onClick={() => idSorting("id")}>
                 ID
-                <FaSort/>
+                <FaSort />
               </th>
               <th className="clikable" onClick={() => sorting("first_name")}>
                 Fisrt Name
-                <FaSort/>
+                <FaSort />
               </th>
               <th className="clikable" onClick={() => sorting("last_name")}>
                 Last Name
-                <FaSort/>
+                <FaSort />
               </th>
               <th className="clikable" onClick={() => sorting("email")}>
                 Email
-                <FaSort/>
+                <FaSort />
               </th>
-              <th className="clikable" onClick={() => sorting("gender")}>
-                Gender
-                <FaSort/>
-              </th>
+              <th>Gender</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -172,9 +168,9 @@ function Table() {
                     <button
                       type="button"
                       className="btn btn-sm btn-danger"
-                      onClick={() => deleteBtnHandler(person.id)}
+                      onClick={() => deleteHandler(person.id)}
                     >
-                     <FaTrash/>
+                      <FaTrash />
                     </button>
                   </td>
                 </tr>
@@ -187,7 +183,7 @@ function Table() {
           <Pagination
             currentPage={currentPage}
             rowsPerPage={rowsPerPage}
-            mockData={mockData}
+            mockData={mockdata}
             setCurrentPage={setCurrentPage}
           />
         </div>
