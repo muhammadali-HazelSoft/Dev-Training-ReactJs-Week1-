@@ -1,14 +1,13 @@
 import Toast from 'react-bootstrap/Toast';
+import './Toast.css';
 
-function LoginToast() {
+function LoginToast(props) {
   return (
-    <Toast>
-      <Toast.Header>
-        <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
-        <strong className="me-auto">Login Error</strong>
-        <small>11 mins ago</small>
+    <Toast className='LoginToast position-absolute bg-danger bg-opacity-25' onClose={()=>props.setShow(false)} show={props.toastShow} delay={2000} autohide>
+      <Toast.Header className='bg-danger'>
+        <strong className="me-auto text-light">Login Error</strong>
       </Toast.Header>
-      <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+      <Toast.Body className='text-light fw-light'>username or password is incorrect!!</Toast.Body>
     </Toast>
   );
 }
